@@ -13,10 +13,6 @@ class _AddCategoryState extends State<AddCategory> {
 
   final _myIdController = TextEditingController();
   final _myCategoryNameController = TextEditingController();
-
-
-
-
   final dbaHelper = Db_AdminHelper.instance;
 
   @override
@@ -132,37 +128,27 @@ class _AddCategoryState extends State<AddCategory> {
 
     try {
       final id = await dbaHelper.insertCategory(row);
-      Fluttertoast.showToast(
-          msg: "Successfully Saved",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.blue,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
-
-     /*
-      final allRows = await dbaHelper.queryCategory();
-      print('query all rows:');
-      print(allRows);
-      allRows.forEach(print);*/
-      final allRows = await dbaHelper.getAllCat();
-      print("**********");
-     for(var i=0;i<allRows.length;i++){
-       print(allRows[i]['category_name']);
-     }
-
+      if (id  >0) {
+        Fluttertoast.showToast(
+            msg: "update successfully",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.black,
+            fontSize: 16.0
+        );
+      }
     }
-    catch (error) {
+    catch(error) {
       print(error);
       Fluttertoast.showToast(
-          msg: "Error pls verify your id ",
+          msg: "error occured",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
-          backgroundColor: Colors.blue,
-          textColor: Colors.white,
+          backgroundColor: Colors.green,
+          textColor: Colors.black,
           fontSize: 16.0
       );
     }

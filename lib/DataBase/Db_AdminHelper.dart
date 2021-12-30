@@ -68,7 +68,7 @@ class Db_AdminHelper {
     await db.execute('PRAGMA foreign_keys = ON');
   }
 
-
+  /********** Tabs Creation ******/
   Future _onCreate(Database db, int version) async {
     await db.execute('''
           CREATE TABLE $tableAdmin (
@@ -110,24 +110,39 @@ class Db_AdminHelper {
   }
 
 
+  /********** Admin methods  ******/
+
   Future<int> insertAdmin(Map<String, dynamic> row) async {
     Database db = await instance.database;
     return await db.insert(tableAdmin, row);
   }
 
+  Future<List<Map<String, dynamic>>> queryAdmin() async {
+    Database db = await instance.database;
+    return await db.query(tableAdmin);
+  }
+
+  Future<List<Map<String, dynamic>>?>  getAdmin(Map<String, dynamic> row) async {
+    Database db = await instance.database;
+    String id = row[Id];
+    String pwd=row[Password];
+
+    var res = await db.rawQuery("SELECT $Name  FROM $tableAdmin WHERE "
+        "$Id ='$id' AND "
+        "$Password ='$pwd' ");
+    if (res.length>0){
+      return res;
+    }
+    else
+      return null;
+
+  }
+
+  /********** Category  methods  ******/
+
   Future<int> insertCategory(Map<String, dynamic> row) async {
     Database db = await instance.database;
     return await db.insert(tableCategory, row);
-  }
-
-  Future<int> insertComponent(Map<String, dynamic> row) async {
-    Database db = await instance.database;
-    return await db.insert(tableComponent, row);
-  }
-
-  Future<List<Map<String, dynamic>>> queryCategory() async {
-    Database db = await instance.database;
-    return await db.query(tableCategory);
   }
 
 
@@ -136,9 +151,26 @@ class Db_AdminHelper {
     Database db = await instance.database;
     var res= await db.rawQuery("SELECT $CategoryName FROM $tableCategory");
 
+    return res;
+
+  }
+
+  Future<List<Map<String, dynamic>>?> getIdCategory(String cat) async {
+    Database db = await instance.database;
+    var res= await db.rawQuery("SELECT $CategoryId FROM $tableCategory WHERE "
+        "$CategoryName='$cat'");
+    if (res.length>0){
       return res;
+    }
+    else
+      return null;
+  }
 
+  /********** Component  methods  ******/
 
+  Future<int> insertComponent(Map<String, dynamic> row) async {
+    Database db = await instance.database;
+    return await db.insert(tableComponent, row);
   }
 
   Future<List<Map<String, dynamic>>> getAllCom() async {
@@ -148,44 +180,28 @@ class Db_AdminHelper {
 
     return res;
 
-
   }
 
-  Future<List<Map<String, dynamic>>> queryAdmin() async {
+  Future<List<Map<String, dynamic>>?> getIdComponent(String com) async {
     Database db = await instance.database;
-    return await db.query(tableAdmin);
-  }
-
-
-  Future<List<Map<String, dynamic>>?>  getAdmin(Map<String, dynamic> row) async {
-    Database db = await instance.database;
-     String id = row[Id];
-    String pwd=row[Password];
-
-    var res = await db.rawQuery("SELECT $Name  FROM $tableAdmin WHERE "
-                                "$Id ='$id' AND "
-                                "$Password ='$pwd' ");
-    if (res.length>0){
-      return res;
-    }
-    else
-      return null;
-
-  }
-
-  Future<List<Map<String, dynamic>>?> getIdCategory(String cat) async {
-    Database db = await instance.database;
-    var res= await db.rawQuery("SELECT $CategoryId FROM $tableCategory WHERE "
-                               "$CategoryName='$cat'");
+    var res= await db.query(tableComponent,where: 'component_id=?',whereArgs:[com]);
     if (res.length>0){
       return res;
     }
     else
       return null;
   }
+
 
   Future<int> deleteComponent(String id) async {
     Database db = await instance.database;
     return await db.delete(tableComponent, where: '$ComponentId = ?', whereArgs: [id]);
+  }
+
+
+  Future<int> updateComponent(Map<String, dynamic> row) async {
+    Database db = await instance.database;
+    String id = row[ComponentId];
+    return await db.update(tableComponent, row, where: '$ComponentId = ?', whereArgs: [id]);
   }
 }

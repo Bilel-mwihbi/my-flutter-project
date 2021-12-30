@@ -13,85 +13,13 @@ class SignUpView extends StatefulWidget {
 
 class _SignUpViewState extends State<SignUpView> {
 
+    final dbaHelper = Db_AdminHelper.instance;
+
    final _myIdController=TextEditingController();
    final _myNameController=TextEditingController();
    final _myEmailController=TextEditingController();
    final _myPwdController=TextEditingController();
    final _myCPwdController=TextEditingController();
-
-   signUp(){
-
-     String id=_myIdController.text;
-     String name=_myNameController.text;
-     String email=_myEmailController.text;
-     String password=_myPwdController.text;
-     String cpassword=_myCPwdController.text;
-
-     if(id.isEmpty){
-       Fluttertoast.showToast(
-           msg: "Pls enter ID",
-           toastLength: Toast.LENGTH_SHORT,
-           gravity: ToastGravity.BOTTOM,
-           timeInSecForIosWeb: 1,
-           backgroundColor: Colors.green,
-           textColor: Colors.black,
-           fontSize: 16.0
-       );
-     } else if(name.isEmpty){
-       Fluttertoast.showToast(
-           msg: "Pls enter Name",
-           toastLength: Toast.LENGTH_SHORT,
-           gravity: ToastGravity.BOTTOM,
-           timeInSecForIosWeb: 1,
-           backgroundColor: Colors.green,
-           textColor: Colors.black,
-           fontSize: 16.0
-       );
-     }else if(email.isEmpty){
-       Fluttertoast.showToast(
-           msg: "Pls enter Email",
-           toastLength: Toast.LENGTH_SHORT,
-           gravity: ToastGravity.BOTTOM,
-           timeInSecForIosWeb: 1,
-           backgroundColor: Colors.green,
-           textColor: Colors.black,
-           fontSize: 16.0
-       );
-     }else if(password.isEmpty){
-       Fluttertoast.showToast(
-           msg: "Pls enter Password",
-           toastLength: Toast.LENGTH_SHORT,
-           gravity: ToastGravity.BOTTOM,
-           timeInSecForIosWeb: 1,
-           backgroundColor: Colors.green,
-           textColor: Colors.black,
-           fontSize: 16.0
-       );
-     }else if(password !=cpassword){
-       Fluttertoast.showToast(
-           msg: "Pls verify password",
-           toastLength: Toast.LENGTH_SHORT,
-           gravity: ToastGravity.BOTTOM,
-           timeInSecForIosWeb: 1,
-           backgroundColor: Colors.green,
-           textColor: Colors.black,
-           fontSize: 16.0
-       );
-     } else {
-       _insert();
-     }
-   }
-   @override
-   void dispose(){
-     _myIdController.dispose();
-     _myNameController.dispose();
-     _myEmailController.dispose();
-     _myPwdController.dispose();
-     _myCPwdController.dispose();
-     super.dispose();
-   }
-
-   final dbaHelper = Db_AdminHelper.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +55,7 @@ class _SignUpViewState extends State<SignUpView> {
                         borderSide: BorderSide(color:Colors.black54),
                       ),
                       prefixIcon: Icon(Icons.person),
-                      hintText: "Admin Id",
+                      hintText: "Id",
                       fillColor: Colors.grey[300],
 
                     ),
@@ -148,7 +76,7 @@ class _SignUpViewState extends State<SignUpView> {
                         borderSide: BorderSide(color: Colors.black54),
                       ),
                       prefixIcon: Icon(Icons.person_outlined),
-                      hintText: "Admin Name",
+                      hintText: "Name",
                       fillColor: Colors.grey[300],
 
                     ),
@@ -261,6 +189,67 @@ class _SignUpViewState extends State<SignUpView> {
       ),
     );
   }
+    signUp(){
+      String id=_myIdController.text;
+      String name=_myNameController.text;
+      String email=_myEmailController.text;
+      String password=_myPwdController.text;
+      String cpassword=_myCPwdController.text;
+
+      if(id.isEmpty){
+        Fluttertoast.showToast(
+            msg: "pls enter ID",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.black,
+            fontSize: 16.0
+        );
+      } else if(name.isEmpty){
+        Fluttertoast.showToast(
+            msg: "pls enter name",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.black,
+            fontSize: 16.0
+        );
+      }else if(email.isEmpty){
+        Fluttertoast.showToast(
+            msg: "pls enter email",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.black,
+            fontSize: 16.0
+        );
+      }else if(password.isEmpty){
+        Fluttertoast.showToast(
+            msg: "pls enter password",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.black,
+            fontSize: 16.0
+        );
+      }else if(password !=cpassword){
+        Fluttertoast.showToast(
+            msg: "pls verify password",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.black,
+            fontSize: 16.0
+        );
+      } else {
+        _insert();
+      }
+    }
 
   void _insert() async {
      Map<String,dynamic> row={
@@ -271,20 +260,22 @@ class _SignUpViewState extends State<SignUpView> {
      };
      try {
        final id = await dbaHelper.insertAdmin(row);
-       Fluttertoast.showToast(
-           msg: "Successfully Saved",
-           toastLength: Toast.LENGTH_SHORT,
-           gravity: ToastGravity.BOTTOM,
-           timeInSecForIosWeb: 1,
-           backgroundColor: Colors.blue,
-           textColor: Colors.white,
-           fontSize: 16.0
-       );
+        if (id >0) {
+          Fluttertoast.showToast(
+              msg: "successfully saved",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.blue,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );
+        }
      }
      catch(error){
        print(error);
        Fluttertoast.showToast(
-           msg: "Error pls verify your id ",
+           msg: "error occured",
            toastLength: Toast.LENGTH_SHORT,
            gravity: ToastGravity.BOTTOM,
            timeInSecForIosWeb: 1,
@@ -295,5 +286,14 @@ class _SignUpViewState extends State<SignUpView> {
      }
 
   }
+   @override
+   void dispose(){
+     _myIdController.dispose();
+     _myNameController.dispose();
+     _myEmailController.dispose();
+     _myPwdController.dispose();
+     _myCPwdController.dispose();
+     super.dispose();
+   }
 }
 

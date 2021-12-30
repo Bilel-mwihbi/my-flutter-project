@@ -56,7 +56,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print(myComp);
     return Scaffold(
       drawer: MyDrawer(),
       appBar: AppBar(title: Text("Home"),),
@@ -104,9 +103,11 @@ class _HomePageState extends State<HomePage> {
                           padding: const EdgeInsets.all(8.0),
                           child: RaisedButton(
                             onPressed: (){
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (_)=>EditComponent(
-                                  //  lists:myComp[index]
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_)=>
+                                      EditComponent(
+                                          content:myComp[index]
                                   )));
                             },
                             color:Colors.deepOrange,

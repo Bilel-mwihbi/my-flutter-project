@@ -249,20 +249,23 @@ class _AddComponentState extends State<AddComponent> {
 
     try {
       final id = await dbaHelper.insertComponent(row);
-      Fluttertoast.showToast(
-          msg: "Successfully Saved",
+      if (id >0)  {
+          Fluttertoast.showToast(
+          msg: "successfully saved",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.blue,
           textColor: Colors.white,
           fontSize: 16.0
-      );
+          );
+      }
+
     }
     catch (error) {
       print(error);
       Fluttertoast.showToast(
-          msg: "Error pls verify your id ",
+          msg: "error occured",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -271,65 +274,6 @@ class _AddComponentState extends State<AddComponent> {
           fontSize: 16.0
       );
     }
-
-/*
-    await dbaHelper.getIdCategory(category).then((value) {
-      if (value == null) {
-        Fluttertoast.showToast(
-            msg: "category does not exist",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.blue,
-            textColor: Colors.white,
-            fontSize: 16.0
-        );
-      } else {
-        print(value[0]['category_id']);
-
-        Map<String, dynamic> row = {
-          Db_AdminHelper.ComponentId: componentId.text,
-          Db_AdminHelper.ComponentName: componentRef.text,
-          Db_AdminHelper.quantity: qte,
-          Db_AdminHelper.date_accui:"hello",
-          Db_AdminHelper.date_retour:"hello",
-          Db_AdminHelper.cate:value[0]['category_id']
-
-        };
-
-        try {
-          final id =  dbaHelper.insertComponent(row);
-          Fluttertoast.showToast(
-              msg: "Successfully Saved",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.blue,
-              textColor: Colors.white,
-              fontSize: 16.0
-          );
-
-          final allRows =  dbaHelper.queryComponent();
-          allRows.then((value) => print(value));
-
-        }
-        catch (error) {
-          print(error);
-          Fluttertoast.showToast(
-              msg: "Error pls verify your id ",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.blue,
-              textColor: Colors.white,
-              fontSize: 16.0
-          );
-        }
-      }
-    });
-
-
- */
 
 
     }

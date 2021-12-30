@@ -20,43 +20,6 @@ class _LoginViewState extends State<LoginView> {
 
   final dbaHelper = Db_AdminHelper.instance;
 
-
-
-  Login() {
-    String id=_myIdController.text;
-    String password=_myPwdController.text;
-
-    if(id.isEmpty){
-      Fluttertoast.showToast(
-          msg: "Pls enter ID",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.black,
-          fontSize: 16.0
-      );
-    }else if(password.isEmpty){
-      Fluttertoast.showToast(
-          msg: "Pls enter Password",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.black,
-          fontSize: 16.0
-      );
-    } else {
-      _login(id,password);
-    }
-  }
-
-  @override
-  void dispose(){
-    _myIdController.dispose();
-    _myPwdController.dispose();
-    super.dispose();
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,7 +76,7 @@ class _LoginViewState extends State<LoginView> {
                         borderSide: BorderSide(color: Colors.black54),
                       ),
                       prefixIcon: Icon(Icons.lock),
-                      hintText: "PassWord",
+                      hintText: "Password",
                       fillColor: Colors.grey[300],
 
                     ),
@@ -144,7 +107,7 @@ class _LoginViewState extends State<LoginView> {
                         Text("Are you a new admin ?"),
                         FlatButton(
                            textColor: Colors.green,
-                          child: Text("signup"),
+                          child: Text("sign up"),
                           onPressed: (){
                              Navigator.push(context,
                              MaterialPageRoute(builder: (_)=>SignUpView()));
@@ -161,6 +124,34 @@ class _LoginViewState extends State<LoginView> {
       ),
     );
   }
+  Login() {
+    String id=_myIdController.text;
+    String password=_myPwdController.text;
+
+    if(id.isEmpty){
+      Fluttertoast.showToast(
+          msg: "pls enter ID",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.black,
+          fontSize: 16.0
+      );
+    }else if(password.isEmpty){
+      Fluttertoast.showToast(
+          msg: "pls enter Password",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.black,
+          fontSize: 16.0
+      );
+    } else {
+      _login(id,password);
+    }
+  }
 
   void _login(String id,String pwd) async{
     Map<String,dynamic> row={
@@ -168,9 +159,6 @@ class _LoginViewState extends State<LoginView> {
         Db_AdminHelper.Password : pwd
     };
 
-    final allRows = await dbaHelper.queryAdmin();
-    print('query all rows:');
-    allRows.forEach(print);
 
     await dbaHelper.getAdmin(row).then((value) { if (value == null) {
       Fluttertoast.showToast(
@@ -188,7 +176,12 @@ class _LoginViewState extends State<LoginView> {
     }
     });
 
-
+  }
+  @override
+  void dispose(){
+    _myIdController.dispose();
+    _myPwdController.dispose();
+    super.dispose();
   }
 }
 

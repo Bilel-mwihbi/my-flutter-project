@@ -204,4 +204,15 @@ class Db_AdminHelper {
     String id = row[ComponentId];
     return await db.update(tableComponent, row, where: '$ComponentId = ?', whereArgs: [id]);
   }
+
+  Future<List<Map<String, dynamic>>?> searchComponents(String word) async {
+    Database db = await instance.database;
+    var res= await db.query(tableComponent,where: 'component_name LIKE ?',whereArgs:['%$word%']);
+    if (res.length>0){
+      return res;
+    }
+    else
+      return null;
+  }
 }
+
